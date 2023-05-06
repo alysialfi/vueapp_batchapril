@@ -68,6 +68,7 @@
                 } else {
                     this.isItemExceedingMaxAmount = false
                 }
+                this.subTotal = 75 * this.amount
             }
         },
     }
