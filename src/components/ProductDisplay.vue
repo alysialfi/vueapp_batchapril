@@ -19,11 +19,13 @@
                     <div class="bg-gray-100 border border-black w-8 h-6 text-black text-center">{{ amount }}</div>
                     <button @click="increaseAmount()" class="bg-black w-8 h-6 text-white text-center">+</button>
                 </div>
-                <div v-if="isItemExceedingMaxAmount" class="mb-16 text-xs mt-1 text-red-500">
+                <div v-if="isItemAddedToCart && isItemExceedingMaxAmount" class="mb-16 text-xs mt-1 text-red-500">
                     <div>maximum items that can be added is 3</div>
-                    <!-- <div>successfully added to cart</div> -->
                 </div>
-                <div class="mb-2">Subtotal: $0</div>
+                <div v-else-if="isItemAddedToCart && !isItemExceedingMaxAmount" :class="amount === 0 ? 'hidden' : 'block'"  class="mb-16 text-xs mt-1 text-green-500">
+                    <div>successfully added to cart</div>
+                </div>
+                <div class="mb-2">Subtotal: ${{ subTotal }}</div>
                 <div class="flex gap-4">
                     <button class="bg-black text-white w-1/2 h-12">
                         Buy Now
@@ -43,7 +45,9 @@
         data() {
             return {
                 amount: 0,
-                isItemExceedingMaxAmount: false
+                isItemExceedingMaxAmount: false,
+                isItemAddedToCart: false,
+                subTotal: 0
             }
         },
         methods: {
@@ -57,8 +61,12 @@
                 this.amount -= 1
             },
             addToCart() {
-                if(this.amount >= 3) {
+                this.isItemAddedToCart = true
+                // max amount is 3
+                if(this.amount > 3) {
                     this.isItemExceedingMaxAmount = true
+                } else {
+                    this.isItemExceedingMaxAmount = false
                 }
             }
         },
